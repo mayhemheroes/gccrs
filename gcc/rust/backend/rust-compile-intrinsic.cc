@@ -15,15 +15,16 @@
 // <http://www.gnu.org/licenses/>.
 
 #include "rust-compile-intrinsic.h"
-#include "fold-const.h"
-#include "langhooks.h"
 #include "rust-compile-context.h"
 #include "rust-compile-type.h"
 #include "rust-compile-fnparam.h"
 #include "rust-diagnostics.h"
 #include "rust-location.h"
+#include "rust-constexpr.h"
 #include "rust-tree.h"
 #include "tree-core.h"
+#include "fold-const.h"
+#include "langhooks.h"
 
 namespace Rust {
 namespace Compile {
@@ -331,6 +332,8 @@ offset_intrinsic_handler (Context *ctx, TyTy::BaseType *fntype_tyty)
   gcc_assert (TREE_CODE (bind_tree) == BIND_EXPR);
   DECL_SAVED_TREE (fndecl) = bind_tree;
   ctx->push_function (fndecl);
+  DECL_DECLARED_CONSTEXPR_P (fndecl);
+  maybe_save_constexpr_fundef (fndecl);
 
   return fndecl;
 }
@@ -418,6 +421,8 @@ sizeof_intrinsic_handler (Context *ctx, TyTy::BaseType *fntype_tyty)
   gcc_assert (TREE_CODE (bind_tree) == BIND_EXPR);
   DECL_SAVED_TREE (fndecl) = bind_tree;
   ctx->push_function (fndecl);
+  DECL_DECLARED_CONSTEXPR_P (fndecl);
+  maybe_save_constexpr_fundef (fndecl);
 
   return fndecl;
 }
@@ -556,6 +561,8 @@ transmute_intrinsic_handler (Context *ctx, TyTy::BaseType *fntype_tyty)
   gcc_assert (TREE_CODE (bind_tree) == BIND_EXPR);
   DECL_SAVED_TREE (fndecl) = bind_tree;
   ctx->push_function (fndecl);
+  DECL_DECLARED_CONSTEXPR_P (fndecl);
+  maybe_save_constexpr_fundef (fndecl);
 
   return fndecl;
 }
@@ -662,6 +669,8 @@ rotate_intrinsic_handler (Context *ctx, TyTy::BaseType *fntype_tyty,
   gcc_assert (TREE_CODE (bind_tree) == BIND_EXPR);
   DECL_SAVED_TREE (fndecl) = bind_tree;
   ctx->push_function (fndecl);
+  DECL_DECLARED_CONSTEXPR_P (fndecl);
+  maybe_save_constexpr_fundef (fndecl);
 
   return fndecl;
 }
