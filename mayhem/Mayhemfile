@@ -1,0 +1,4 @@
+project: gccrs
+target: gccrs-gccrs-libgo-go-html-fuzz
+cmds:
+  - cmd: ./html-string-fuzz.libfuzzer
